@@ -1,0 +1,42 @@
+body {
+    font-family: Arial;
+    margin: 20px;
+    background: #f5f5f5;
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #0066ff;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+}
+
+button.sec {
+    background: #444;
+}
+
+.item {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+}

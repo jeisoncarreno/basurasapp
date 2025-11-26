@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Cliente</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <div class="card">
+        <h2>Crear servicio</h2>
+        <input id="torre" placeholder="Torre (ej: A)">
+        <input id="apartamento" placeholder="Apto (ej: 301)">
+        <input id="precio" type="number" placeholder="Precio">
+        <button id="btnCrear">Crear Pedido</button>
+    </div>
+
+    <h3>Mis pedidos</h3>
+    <div id="misPedidos"></div>
+
+    <!-- Socket.IO client -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <!-- Firebase si lo usas (si no, omite) -->
+    <!-- <script type="module" src="/firebase.js"></script> -->
+
+    <!-- Tu JS que manipula DOM y llama a la API -->
+    <script src="/app-cliente.js"></script>
+</body>
+
+</html>

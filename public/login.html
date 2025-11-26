@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css">
+    <title>Login – BasurasApp</title>
+</head>
+
+<body>
+
+    <div class="card">
+        <h2>Iniciar sesión</h2>
+
+        <label>Torre</label>
+        <input id="torre" placeholder="Ej: A, B, C">
+
+        <label>Apartamento</label>
+        <input id="apartamento" placeholder="Ej: 301">
+
+        <button onclick="loginCliente()">Entrar como Cliente</button>
+        <button onclick="loginTrabajador()" class="sec">Entrar como Trabajador</button>
+    </div>
+
+    <script>
+        function loginCliente() {
+            localStorage.setItem("rol", "cliente");
+            localStorage.setItem("torre", document.getElementById("torre").value);
+            localStorage.setItem("apartamento", document.getElementById("apartamento").value);
+            window.location = "cliente.html";
+        }
+
+        function loginTrabajador() {
+            localStorage.setItem("rol", "trabajador");
+            window.location = "trabajador.html";
+        }
+    </script>
+
+</body>
+
+</html>

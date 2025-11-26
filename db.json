@@ -1,0 +1,12 @@
+{
+  "usuarios": [],
+  "servicios": [
+    {
+      "id": 1764137521905,
+      "clienteId": "bloque c1 402",
+      "precio": "600",
+      "estado": "tomado",
+      "trabajadorId": ""
+    }
+  ]
+}
