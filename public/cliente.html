@@ -9,25 +9,98 @@
 </head>
 
 <body>
+
     <div class="card">
-        <h2>Crear servicio</h2>
-        <input id="torre" placeholder="Torre (ej: A)">
-        <input id="apartamento" placeholder="Apto (ej: 301)">
-        <input id="precio" type="number" placeholder="Precio">
-        <button id="btnCrear">Crear Pedido</button>
+        <h2>Mi Servicio</h2>
+
+        <p id="datosCliente"></p> <!-- Aquí mostramos los datos -->
+
+        <input id="precio" type="number" placeholder="Precio del servicio" min="600" step="100">
+
+        <button id="btnCrear">Solicitar Servicio</button>
+
+
+        <!-- NUEVO botón oculto -->
+        <button id="btnNuevo" style="display:none; background:#4CAF50; color:white;">
+            Crear nuevo servicio
+        </button>
+
     </div>
 
-    <h3>Mis pedidos</h3>
+    <h3>Estado Actual</h3>
+    <div id="estadoActual"></div>
+
+    <h3>Historial de Servicios</h3>
     <div id="misPedidos"></div>
 
-    <!-- Socket.IO client -->
     <script src="/socket.io/socket.io.js"></script>
-
-    <!-- Firebase si lo usas (si no, omite) -->
-    <!-- <script type="module" src="/firebase.js"></script> -->
-
-    <!-- Tu JS que manipula DOM y llama a la API -->
     <script src="/app-cliente.js"></script>
+
+    <!-- 🔥 SCRIPT NUEVO PARA MOSTRAR LOS DATOS DEL LOGIN -->
+    <script>
+        const nombre = localStorage.getItem("nombre");
+        const torre = localStorage.getItem("torre");
+        const apartamento = localStorage.getItem("apartamento");
+
+        if (nombre && torre && apartamento) {
+            document.getElementById("datosCliente").innerHTML = `
+                <strong>Nombre:</strong> ${nombre}<br>
+                <strong>Torre:</strong> ${torre}<br>
+                <strong>Apartamento:</strong> ${apartamento}
+            `;
+        } else {
+            document.getElementById("datosCliente").innerHTML =
+                "No se encontraron datos del cliente.";
+        }
+    </script>
+
 </body>
+
+<!-- Notificaciones bonitas -->
+<style>
+    .toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #333;
+        color: white;
+        padding: 12px 18px;
+        border-radius: 8px;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: 0.3s;
+        pointer-events: none;
+        font-size: 14px;
+        z-index: 9999;
+    }
+
+    .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .toast.success {
+        background: #28a745;
+    }
+
+    .toast.error {
+        background: #dc3545;
+    }
+</style>
+
+<div id="toast" class="toast"></div>
+
+<script>
+    function toast(msg, type = "success") {
+        const t = document.getElementById("toast");
+        t.innerText = msg;
+        t.className = "toast " + type + " show";
+
+        setTimeout(() => {
+            t.classList.remove("show");
+        }, 2500);
+    }
+</script>
+
 
 </html>

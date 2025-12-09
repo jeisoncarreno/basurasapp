@@ -78,7 +78,9 @@ app.post("/api/pedidos", (req, res) => {
         descripcion,
         precio,
         estado: "pendiente",
-        trabajador: null
+        trabajador: null,
+        fecha: new Date().toISOString()
+
     };
 
     pedidos.push(nuevo);
@@ -108,6 +110,32 @@ app.post("/api/completar/:id", (req, res) => {
     broadcastPedidos();
     res.json({ ok: true, pedido });
 });
+
+// ------------------------------------------------------
+//  Obtener pedidos de un cliente (estado + historial)
+//  GET /api/misPedidos?torre=A&apartamento=301
+// ------------------------------------------------------
+app.get("/api/misPedidos", (req, res) => {
+    const { torre, apartamento } = req.query;
+
+    if (!torre || !apartamento) {
+        return res.json([]);
+    }
+
+    const clienteID = `${torre}-${apartamento}`;
+
+    // Si tus pedidos están en memoria, usar:
+    // const lista = pedidos.filter(p => p.cliente === clienteID);
+
+    // Si usas Firebase, reemplazar por tu consulta:
+    let lista = pedidos.filter(p => p.cliente === clienteID);
+
+    // Ordenar más reciente primero
+    lista.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+    res.json(lista);
+});
+
 
 // =============================
 //  SERVIDOR
