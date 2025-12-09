@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="styles.css">
-    <title>Login – BasurasApp</title>
+    <title>Botar Basura – BasurasApp</title>
 </head>
 
 <body>
 
     <div class="card">
-        <h2>Iniciar sesión</h2>
+        <h2>Botar Basura</h2>
+
+        <label>Nombre</label>
+        <input id="nombre" placeholder="Ej: Juan Pérez">
 
         <label>Torre</label>
         <input id="torre" placeholder="Ej: A, B, C">
@@ -18,21 +21,41 @@
         <label>Apartamento</label>
         <input id="apartamento" placeholder="Ej: 301">
 
-        <button onclick="loginCliente()">Entrar como Cliente</button>
-        <button onclick="loginTrabajador()" class="sec">Entrar como Trabajador</button>
+        <button onclick="entrarCliente()">Solicitar servicio</button>
     </div>
 
     <script>
-        function loginCliente() {
-            localStorage.setItem("rol", "cliente");
-            localStorage.setItem("torre", document.getElementById("torre").value);
-            localStorage.setItem("apartamento", document.getElementById("apartamento").value);
-            window.location = "cliente.html";
-        }
+        async function entrarCliente() {
+            const nombre = document.getElementById("nombre").value;
+            const torre = document.getElementById("torre").value;
+            const apartamento = document.getElementById("apartamento").value;
 
-        function loginTrabajador() {
-            localStorage.setItem("rol", "trabajador");
-            window.location = "trabajador.html";
+            if (!nombre || !torre || !apartamento) {
+                alert("Por favor complete todos los campos.");
+                return;
+            }
+
+            // Guardar datos en localStorage para uso interno
+            localStorage.setItem("rol", "cliente");
+            localStorage.setItem("nombre", nombre);
+            localStorage.setItem("torre", torre);
+            localStorage.setItem("apartamento", apartamento);
+
+            // Registrar el cliente en Firebase
+            try {
+                const response = await fetch("/registroCliente", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ nombre, torre, apartamento })
+                });
+
+                const result = await response.json();
+                console.log(result);
+            } catch (err) {
+                console.error("Error al registrar cliente:", err);
+            }
+
+            window.location = "cliente.html";
         }
     </script>
 

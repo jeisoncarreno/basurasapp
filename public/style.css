@@ -1,42 +1,57 @@
 body {
-    font-family: Arial;
-    margin: 20px;
-    background: #f5f5f5;
+    background: linear-gradient(135deg, #4c8cff, #6cd1ff);
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
 }
 
 .card {
     background: white;
-    padding: 15px;
-    border-radius: 10px;
+    padding: 25px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 380px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+
+h2 {
     margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    text-align: left;
+    margin-top: 12px;
+    font-size: 14px;
+    font-weight: bold;
 }
 
 input {
     width: 100%;
-    padding: 10px;
-    margin-top: 8px;
-    margin-bottom: 12px;
-    border-radius: 8px;
+    margin-top: 5px;
+    padding: 12px;
+    border-radius: 10px;
     border: 1px solid #ccc;
+    font-size: 15px;
+    outline: none;
 }
 
 button {
     width: 100%;
+    margin-top: 20px;
     padding: 12px;
-    background: #0066ff;
+    background: #4c8cff;
     border: none;
-    border-radius: 8px;
-    color: white;
-    font-size: 16px;
-}
-
-button.sec {
-    background: #444;
-}
-
-.item {
-    background: white;
-    padding: 15px;
     border-radius: 10px;
-    margin-bottom: 12px;
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+}
+
+button:active {
+    transform: scale(0.98);
 }
