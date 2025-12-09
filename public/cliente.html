@@ -13,30 +13,31 @@
     <div class="card">
         <h2>Mi Servicio</h2>
 
-        <p id="datosCliente"></p> <!-- Aquí mostramos los datos -->
+        <p id="datosCliente"></p> <!-- Datos del cliente -->
 
         <input id="precio" type="number" placeholder="Precio del servicio" min="600" step="100">
 
         <button id="btnCrear">Solicitar Servicio</button>
 
-
-        <!-- NUEVO botón oculto -->
         <button id="btnNuevo" style="display:none; background:#4CAF50; color:white;">
             Crear nuevo servicio
         </button>
+        <p id="historialToggle" style="color:#4c8cff; cursor:pointer; font-weight:bold;">
+            Ver historial de pedidos
+        </p>
+        <div id="misPedidos" style="display:none;"></div>
 
     </div>
 
-    <h3>Estado Actual</h3>
+
     <div id="estadoActual"></div>
 
-    <h3>Historial de Servicios</h3>
-    <div id="misPedidos"></div>
+
+
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="/app-cliente.js"></script>
 
-    <!-- 🔥 SCRIPT NUEVO PARA MOSTRAR LOS DATOS DEL LOGIN -->
     <script>
         const nombre = localStorage.getItem("nombre");
         const torre = localStorage.getItem("torre");
@@ -56,7 +57,6 @@
 
 </body>
 
-<!-- Notificaciones bonitas -->
 <style>
     .toast {
         position: fixed;
@@ -89,18 +89,13 @@
 </style>
 
 <div id="toast" class="toast"></div>
-
 <script>
     function toast(msg, type = "success") {
         const t = document.getElementById("toast");
         t.innerText = msg;
         t.className = "toast " + type + " show";
-
-        setTimeout(() => {
-            t.classList.remove("show");
-        }, 2500);
+        setTimeout(() => { t.classList.remove("show"); }, 2500);
     }
 </script>
-
 
 </html>

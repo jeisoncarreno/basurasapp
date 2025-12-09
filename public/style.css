@@ -24,6 +24,8 @@ body {
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     text-align: center;
     transition: transform 0.2s, box-shadow 0.2s;
+    margin-bottom: 25px;
+    /* separa la card principal del resto */
 }
 
 .card:hover {
@@ -159,4 +161,68 @@ button:active {
     h2 {
         font-size: 22px;
     }
+}
+
+/* ============================= */
+/*  HISTORIAL                     */
+/* ============================= */
+#historialContainer p,
+#historialToggle {
+    cursor: pointer;
+    color: #4c8cff;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+#misPedidos {
+    display: none;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 10px;
+    padding-top: 10px;
+}
+
+#misPedidos .card {
+    margin: 5px 0;
+    padding: 10px;
+    font-size: 14px;
+}
+
+/* Tabla estilo historial */
+.historialTabla {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.historialTabla th,
+.historialTabla td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.historialTabla th {
+    background: linear-gradient(90deg, #4c8cff, #6cd1ff);
+    color: white;
+    font-weight: bold;
+    border-radius: 6px;
+}
+
+.historialTabla tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+.historialTabla tr:hover {
+    background: #e0f0ff;
+}
+
+/* ============================= */
+/*  SEPARACIÓN ENTRE CONTENEDORES */
+/* ============================= */
+#estadoActual {
+    margin-top: 25px;
+    /* separa la card de crear servicio del estado actual */
 }
