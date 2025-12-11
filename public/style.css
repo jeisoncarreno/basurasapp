@@ -1,16 +1,42 @@
 /* ============================= */
 /*  BODY Y FONDO MODERNO         */
 /* ============================= */
+/* ============================= */
+/*  BODY Y FONDO MODERNO         */
+/* ============================= */
 body {
-    background: linear-gradient(145deg, #4c8cff, #6cd1ff);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    font-family: 'Pacifico', cursive,
+        Tahoma,
+        Geneva,
+        Verdana,
+        sans-serif;
     display: flex;
+    color: rgb(26, 26, 26);
+    flex-direction: column;
+    /* <-- ESTA ES LA LÍNEA QUE FALTABA */
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    padding: 15px;
+    padding: 1px;
+
 }
+
+body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("imagen5.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.4;
+    /* ← ajusta la transparencia solo del fondo */
+    z-index: -1;
+    /* queda detrás de todo */
+}
+
 
 /* ============================= */
 /*  CARD PRINCIPAL               */
@@ -47,7 +73,7 @@ h2 {
 /* ============================= */
 label {
     display: block;
-    text-align: left;
+    text-align: center;
     margin-top: 15px;
     font-size: 14px;
     font-weight: 600;
@@ -55,9 +81,10 @@ label {
 }
 
 input {
+    text-align: center;
     width: 100%;
     margin-top: 8px;
-    padding: 14px;
+    padding: 10px;
     border-radius: 12px;
     border: 1px solid #ccc;
     font-size: 16px;
@@ -124,7 +151,7 @@ button:active {
 /*  TOAST NOTIFICACIONES          */
 /* ============================= */
 .toast {
-    position: fixed;
+    position: static;
     bottom: -50px;
     left: 50%;
     transform: translateX(-50%);
@@ -223,6 +250,39 @@ button:active {
 /*  SEPARACIÓN ENTRE CONTENEDORES */
 /* ============================= */
 #estadoActual {
-    margin-top: 25px;
-    /* separa la card de crear servicio del estado actual */
+    margin-top: 50px;
+    color: #3b72d8;
+    margin-left: -50px;
+    */
+    /* ❌ Esto evitaba el centrado */
+    width: 100%;
+    max-width: 400px;
+    /* <-- Ajusta el ancho igual que la card */
+    text-align: center;
+    /* <-- Centra el texto */
+
+}
+
+.campo-precio {
+    position: relative;
+    display: inline-block;
+}
+
+.campo-precio .peso {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #444;
+    pointer-events: none;
+    font-size: 16px;
+}
+
+.campo-precio input {
+    padding-left: 18px;
+    /* para que el texto no quede encima del $ */
+}
+
+.titulo {
+    margin-bottom: 80px;
 }

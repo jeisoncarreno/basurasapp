@@ -5,6 +5,13 @@ const nombre = localStorage.getItem("nombre");
 const torre = localStorage.getItem("torre");
 const apartamento = localStorage.getItem("apartamento");
 
+
+
+
+function formatoCOP(valor) {
+    return `$${Number(valor).toLocaleString("es-CO")}`;
+}
+
 //--------------------------------------------------------------
 // MINI TOAST
 //--------------------------------------------------------------
@@ -21,6 +28,9 @@ function miniToast(texto) {
     }, 2000);
 }
 
+//--------------------------------------------------------------
+// CREAR PEDIDO
+//--------------------------------------------------------------
 //--------------------------------------------------------------
 // CREAR PEDIDO
 //--------------------------------------------------------------
@@ -50,6 +60,9 @@ async function crearPedido() {
         if (data.ok) {
             miniToast("Servicio solicitado correctamente");
 
+            // ⛔ OCULTAR TEXTO DE PROPINA
+            document.getElementById("propinaInfo").style.display = "none";
+
             // Limpiar input
             precioInput.value = "";
 
@@ -68,6 +81,22 @@ async function crearPedido() {
         miniToast("No se pudo conectar con el servidor");
     }
 }
+
+document.getElementById("btnCrear").addEventListener("click", crearPedido);
+
+document.getElementById("btnNuevo").addEventListener("click", () => {
+    const precioInput = document.getElementById("precio");
+    precioInput.style.display = "inline-block";
+    document.getElementById("btnCrear").style.display = "inline-block";
+    document.getElementById("btnNuevo").style.display = "none";
+    precioInput.value = "";
+
+    // ⛔ MOSTRAR TEXTO DE PROPINA OTRA VEZ
+    document.getElementById("propinaInfo").style.display = "block";
+
+    miniToast("Listo para crear un nuevo servicio");
+});
+
 
 document.getElementById("btnCrear").addEventListener("click", crearPedido);
 
@@ -108,7 +137,8 @@ async function cargarMisServicios() {
         <div class="card">
             <p><strong>Servicio creado el:</strong> ${fechaActual.toLocaleDateString()} a las ${fechaActual.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
             <p><strong>Estado:</strong> ${actual.estado}</p>
-            <p><strong>Precio:</strong> ${actual.precio}</p>
+            <p><strong>Precio:</strong> ${formatoCOP(actual.precio)}</p>
+
         </div>
     `;
 
@@ -131,7 +161,8 @@ async function cargarMisServicios() {
                 <tr>
                     <td>${fecha.toLocaleDateString()}</td>
                     <td>${fecha.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
-                    <td>${s.precio}</td>
+                    <td>${formatoCOP(s.precio)}</td>
+
                     <td>${s.estado}</td>
                 </tr>
             `;
@@ -176,6 +207,19 @@ historialToggle.addEventListener("click", () => {
         historialToggle.innerText = "Ver historial de Servicios";
     }
 });
+
+//--------------------------------------------------------------
+// MENSAJE DE BIENVENIDA
+//--------------------------------------------------------------
+window.addEventListener("DOMContentLoaded", () => {
+    const divBienvenida = document.getElementById("bienvenidaUsuario");
+
+    if (divBienvenida && nombre) {
+        divBienvenida.innerText = `Bienvenido ${nombre}`;
+    }
+});
+
+
 
 
 
