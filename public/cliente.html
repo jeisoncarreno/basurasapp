@@ -3,34 +3,48 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <!-- 🔑 CLAVE para que no se vea pequeño -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
     <title>Cliente</title>
+
+    <!-- Color barra superior (Android) -->
+    <meta name="theme-color" content="#4c8cff">
+
+    <!-- iOS modo app -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
     <link rel="stylesheet" href="/style.css">
 </head>
 
+
 <body>
+    <div class="app">
 
-    <div class="card">
-        <h1 id="bienvenidaUsuario"></h1>
-        <p id="propinaInfo">Recuerda que tu eliges el precio, la propina es voluntaria.</p>
+        <div class="card">
+            <h1 id="bienvenidaUsuario"></h1>
+            <p id="propinaInfo">Recuerda que tu eliges el precio, la propina es voluntaria.</p>
 
-        <p id="datosCliente"></p> <!-- Datos del cliente -->
+            <p id="datosCliente"></p> <!-- Datos del cliente -->
 
-        <input id="precio" type="number" placeholder="Propina" min="600" step="100">
+            <input id="precio" type="number" placeholder="Propina" min="600" step="100">
 
-        <button id="btnCrear">Solicitar Servicio</button>
+            <button id="btnCrear">Solicitar Servicio</button>
 
-        <button id="btnNuevo" style="display:none; background:#4CAF50; color:white;">
-            Crear nuevo servicio
-        </button>
-        <p id="historialToggle" style="color:#4c8cff; cursor:pointer; font-weight:bold;">
-            Ver historial de pedidos
-        </p>
-        <div id="misPedidos" style="display:none;"></div>
-
-
+            <button id="btnNuevo" style="display:none; background:#4CAF50; color:white;">
+                Crear nuevo servicio
+            </button>
+            <p id="historialToggle" style="color:#4c8cff; cursor:pointer; font-weight:bold;">
+                Ver historial de pedidos
+            </p>
+            <div id="misPedidos" style="display:none;"></div>
 
 
+
+
+        </div>
     </div>
 
 
