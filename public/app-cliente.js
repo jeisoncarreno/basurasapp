@@ -60,14 +60,20 @@ async function crearPedido() {
         if (data.ok) {
             miniToast("Servicio solicitado correctamente");
 
+            // 🔄 Cambiar bienvenida
+            const bienvenida = document.getElementById("bienvenidaUsuario");
+            bienvenida.classList.add("fade");
+            bienvenida.innerText = "Servicio creado correctamente";
+            bienvenida.style.color = "#28a745";
+
             // ⛔ OCULTAR TEXTO DE PROPINA
             document.getElementById("propinaInfo").style.display = "none";
 
-            // Limpiar input
+            // Limpiar y ocultar input
             precioInput.value = "";
-
-            // Ocultar input y botón
             precioInput.style.display = "none";
+
+            // Ocultar botón crear
             document.getElementById("btnCrear").style.display = "none";
 
             // Mostrar botón nuevo servicio
@@ -75,6 +81,8 @@ async function crearPedido() {
 
             cargarMisServicios();
         }
+
+
 
     } catch (err) {
         console.error("ERROR DE RED:", err);
@@ -93,6 +101,11 @@ document.getElementById("btnNuevo").addEventListener("click", () => {
 
     // ⛔ MOSTRAR TEXTO DE PROPINA OTRA VEZ
     document.getElementById("propinaInfo").style.display = "block";
+
+    const bienvenida = document.getElementById("bienvenidaUsuario");
+    bienvenida.innerText = `¡Bienvenido ${nombre}!`;
+    bienvenida.style.color = "";
+
 
     miniToast("Listo para crear un nuevo servicio");
 });
@@ -215,7 +228,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const divBienvenida = document.getElementById("bienvenidaUsuario");
 
     if (divBienvenida && nombre) {
-        divBienvenida.innerText = `Bienvenido ${nombre}`;
+        divBienvenida.innerText = `¡Bienvenido ${nombre}!`;
     }
 });
 

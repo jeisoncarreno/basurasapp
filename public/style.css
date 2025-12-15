@@ -5,23 +5,15 @@
 /*  BODY Y FONDO MODERNO         */
 /* ============================= */
 body {
-
-    font-family: 'Pacifico', cursive,
-        Tahoma,
-        Geneva,
-        Verdana,
-        sans-serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     display: flex;
-    color: rgb(26, 26, 26);
     flex-direction: column;
-    /* <-- ESTA ES LA LÍNEA QUE FALTABA */
-    justify-content: center;
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    padding: 1px;
-
+    padding: 10px;
 }
+
 
 body::before {
     content: "";
@@ -285,4 +277,8 @@ button:active {
 
 .titulo {
     margin-bottom: 80px;
+}
+
+.fade {
+    transition: 0.3s ease;
 }
