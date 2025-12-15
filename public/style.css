@@ -6,39 +6,52 @@
 /* ============================= */
 body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    margin: 0;
-    padding: 0;
     background: #f2f4f8;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    position: relative;
 }
+
+
 
 
 
 body::before {
     content: "";
-    position: absolute;
+    position: fixed;
+    /* ⬅️ CLAVE */
     inset: 0;
     background-image: url("imagen5.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     opacity: 0.4;
-    /* ← ajusta la transparencia solo del fondo */
     z-index: -1;
-    /* queda detrás de todo */
 }
 
+
 .app {
-    min-height: 100dvh;
-    /* altura real del celular */
+    height: 100dvh;
     width: 100%;
-    max-width: 480px;
-    /* ancho tipo app */
-    margin: 0 auto;
+    max-width: 430px;
+
     padding: 16px;
+
     display: flex;
     flex-direction: column;
     gap: 16px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    box-sizing: border-box;
 }
+
+
+
 
 
 
@@ -46,14 +59,11 @@ body::before {
 /*  CARD PRINCIPAL               */
 /* ============================= */
 .card {
-    background: #ffffff;
-    padding: 28px 22px;
-    border-radius: 20px;
     width: 100%;
-    max-width: 100%;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    text-align: center;
     margin: 0;
+    padding: 20px;
+    border-radius: 18px;
+    background: white;
 }
 
 
@@ -255,7 +265,7 @@ button:active {
 #estadoActual {
     margin-top: 50px;
     color: #3b72d8;
-    margin-left: -50px;
+
     */
     /* ❌ Esto evitaba el centrado */
     width: 100%;
@@ -309,4 +319,10 @@ button,
     font-size: 1.15rem;
     padding: 16px;
     border-radius: 16px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
