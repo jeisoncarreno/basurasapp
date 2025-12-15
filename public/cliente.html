@@ -13,8 +13,9 @@
     <meta name="theme-color" content="#4c8cff">
 
     <!-- iOS modo app -->
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
 
     <link rel="stylesheet" href="/style.css">
 </head>
@@ -56,22 +57,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="/app-cliente.js"></script>
 
-    <script>
-        const nombre = localStorage.getItem("nombre");
-        const torre = localStorage.getItem("torre");
-        const apartamento = localStorage.getItem("apartamento");
 
-        if (nombre && torre && apartamento) {
-            document.getElementById("datosCliente").innerHTML = `
-                    <strong>Nombre:</strong> ${nombre}<br>
-                    <strong>Torre:</strong> ${torre}<br>
-                    <strong>Apartamento:</strong> ${apartamento}
-                `;
-        } else {
-            document.getElementById("datosCliente").innerHTML =
-                "No se encontraron datos del cliente.";
-        }
-    </script>
 
 </body>
 
