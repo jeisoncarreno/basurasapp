@@ -31,6 +31,8 @@ admin.initializeApp({
 });
 
 console.log("Firebase Admin inicializado correctamente!");
+const db = admin.firestore();
+
 
 // Si luego quieres Firestore:
 // const db = admin.firestore();
@@ -49,15 +51,25 @@ app.get("/", (req, res) => {
 // =============================
 //  BASE DE DATOS TEMPORAL
 // =============================
-let pedidos = [];
-let ultimoId = 1;
+
 
 // =============================
 //  SOCKET BROADCAST
 // =============================
-function broadcastPedidos() {
+async function broadcastPedidos() {
+    const snapshot = await db
+        .collection("pedidos")
+        .orderBy("fecha", "desc")
+        .get();
+
+    const pedidos = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+    }));
+
     io.emit("pedidos_actualizados", pedidos);
 }
+
 
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/public/login.html");
@@ -69,72 +81,91 @@ app.get("/", (req, res) => {
 // =============================
 
 // Crear pedido
-app.post("/api/pedidos", (req, res) => {
-    const { cliente, descripcion, precio } = req.body;
+app.post("/api/pedidos", async (req, res) => {
+    try {
+        const { cliente, descripcion, precio } = req.body;
 
-    const nuevo = {
-        id: ultimoId++,
-        cliente,
-        descripcion,
-        precio,
-        estado: "pendiente",
-        trabajador: null,
-        fecha: new Date().toISOString()
+        const nuevo = {
+            cliente,
+            descripcion,
+            precio,
+            estado: "pendiente",
+            trabajador: null,
+            fecha: admin.firestore.FieldValue.serverTimestamp()
+        };
 
-    };
+        const doc = await db.collection("pedidos").add(nuevo);
 
-    pedidos.push(nuevo);
-    broadcastPedidos();
-    res.json({ ok: true, pedido: nuevo });
+        await broadcastPedidos();
+
+        res.json({ ok: true, pedido: { id: doc.id, ...nuevo } });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error creando pedido" });
+    }
 });
+
 
 // Trabajador toma el pedido
-app.post("/api/tomar/:id", (req, res) => {
-    const pedido = pedidos.find(p => p.id == req.params.id);
-    if (!pedido) return res.status(404).json({ error: "No existe" });
+app.post("/api/tomar/:id", async (req, res) => {
+    try {
+        const { trabajador } = req.body;
+        const ref = db.collection("pedidos").doc(req.params.id);
 
-    pedido.estado = "tomado";
-    pedido.trabajador = req.body.trabajador;
+        await ref.update({
+            estado: "tomado",
+            trabajador
+        });
 
-    broadcastPedidos();
-    res.json({ ok: true, pedido });
+        await broadcastPedidos();
+        res.json({ ok: true });
+    } catch (error) {
+        res.status(404).json({ error: "No existe" });
+    }
 });
+
 
 // Marcar completado
-app.post("/api/completar/:id", (req, res) => {
-    const pedido = pedidos.find(p => p.id == req.params.id);
-    if (!pedido) return res.status(404).json({ error: "No existe" });
+app.post("/api/completar/:id", async (req, res) => {
+    try {
+        const ref = db.collection("pedidos").doc(req.params.id);
 
-    pedido.estado = "completado";
+        await ref.update({
+            estado: "completado"
+        });
 
-    broadcastPedidos();
-    res.json({ ok: true, pedido });
+        await broadcastPedidos();
+        res.json({ ok: true });
+    } catch (error) {
+        res.status(404).json({ error: "No existe" });
+    }
 });
+
 
 // ------------------------------------------------------
 //  Obtener pedidos de un cliente (estado + historial)
 //  GET /api/misPedidos?torre=A&apartamento=301
 // ------------------------------------------------------
-app.get("/api/misPedidos", (req, res) => {
+app.get("/api/misPedidos", async (req, res) => {
     const { torre, apartamento } = req.query;
-
-    if (!torre || !apartamento) {
-        return res.json([]);
-    }
+    if (!torre || !apartamento) return res.json([]);
 
     const clienteID = `${torre}-${apartamento}`;
 
-    // Si tus pedidos están en memoria, usar:
-    // const lista = pedidos.filter(p => p.cliente === clienteID);
+    const snapshot = await db
+        .collection("pedidos")
+        .where("cliente", "==", clienteID)
+        .orderBy("fecha", "desc")
+        .get();
 
-    // Si usas Firebase, reemplazar por tu consulta:
-    let lista = pedidos.filter(p => p.cliente === clienteID);
-
-    // Ordenar más reciente primero
-    lista.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+    const lista = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+    }));
 
     res.json(lista);
 });
+
 
 
 // =============================
