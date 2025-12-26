@@ -326,3 +326,46 @@ button,
 *::after {
     box-sizing: border-box;
 }
+
+.menu-principal {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.btn-opcion {
+    padding: 20px;
+    font-size: 20px;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-opcion.basura {
+    background: #2ecc71;
+    color: white;
+}
+
+.btn-opcion.mandado {
+    background: #3498db;
+    color: white;
+}
+
+.btn-volver {
+    background: none;
+    border: none;
+    color: #555;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.mensaje-servicio {
+    font-weight: bold;
+    color: #28a745;
+    margin-bottom: 10px;
+    transition: 0.3s;
+}

@@ -23,43 +23,106 @@
 
 
 <body>
-    <div class="app">
 
-        <div class="card">
-            <h1 id="bienvenidaUsuario"></h1>
-            <p id="propinaInfo">Recuerda que tu eliges el precio, la propina es voluntaria.</p>
+    <div id="menuPrincipal" class="menu-principal">
 
-            <p id="datosCliente"></p> <!-- Datos del cliente -->
+        <h2 id="bienvenidaUsuario" class="bienvenida-menu"></h2>
 
-            <input id="precio" type="number" placeholder="Propina" min="600" step="100">
+        <h1>Que quieres hacer hoy?</h1>
 
-            <button id="btnCrear">Solicitar Servicio</button>
+        <button id="btnBasura" class="btn-opcion basura">
+            🗑️ Botar basura
+        </button>
 
-            <button id="btnNuevo" style="display:none; background:#4CAF50; color:white;">
-                Crear nuevo servicio
-            </button>
-            <p id="historialToggle" style="color:#4c8cff; cursor:pointer; font-weight:bold;">
-                Ver historial de pedidos
-            </p>
-            <div id="misPedidos" style="display:none;"></div>
-
-
-
-
-        </div>
+        <button id="btnMandado" class="btn-opcion mandado">
+            🛒 Pedir un mandado
+        </button>
     </div>
 
 
-    <div id="estadoActual"></div>
+    <div id="seccionBasura" style="display:none;">
+        <button id="btnVolverMenu" class="btn-volver">
+            ← Volver al menú
+        </button>
+
+
+        <div class="app">
+
+            <div class="card">
+
+                <p id="mensajeEstadoServicio" class="mensaje-servicio"></p>
+
+                <p id="propinaInfo">Recuerda que tu eliges el precio, la propina es voluntaria.</p>
+
+                <p id="datosCliente"></p> <!-- Datos del cliente -->
+
+                <input id="precio" type="number" placeholder="Propina" min="600" step="100">
+
+                <button id="btnCrear">Solicitar Servicio</button>
+
+                <button id="btnNuevo" style="display:none; background:#4CAF50; color:white;">
+                    Crear nuevo servicio
+                </button>
+                <p id="historialToggle" style="color:#4c8cff; cursor:pointer; font-weight:bold;">
+                    Ver historial de pedidos
+                </p>
+                <div id="misPedidos" style="display:none;"></div>
 
 
 
 
+            </div>
+        </div>
+
+
+        <div id="estadoActual"></div>
+
+
+
+
+
+
+
+
+    </div>
+    <div id="seccionMandado" style="display: none;">
+
+        <button id="btnVolverMenuMandado" class="btn-volver">
+            ← Volver al menú
+        </button>
+
+        <p id="infoMandado">pide lo que necesites, si es una compra, por favor indica si ya esta pago.</p>
+
+        <p id="mensajeEstadoMandado" class="mensaje-servicio"></p>
+
+
+
+        <!-- <h2>Mandado</h2> -->
+        <p id="mensajeEstadoMandado" class="mensaje-servicio"></p>
+
+        <button id="btnNuevoMandado" style="display:none">
+            Nuevo mandado
+        </button>
+
+        <textarea id="descripcionMandado" placeholder="Describe lo que necesitas hacer..." rows="4"
+            style="width:100%; padding:10px; margin-bottom:10px;"></textarea>
+
+        <input type="number" id="precioMandado" placeholder="Precio del mandado"
+            style="width:100%; padding:10px; margin-bottom:10px;" />
+
+        <button id="btnCrearMandado">
+            Solicitar mandado
+        </button>
+        <p id="toggleMandados" style="color:#4c8cff; cursor:pointer; font-weight:bold;">
+            Ver historial de mandados
+        </p>
+
+        <div id="historialMandados" style="display:none;"></div>
+
+
+    </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/app-cliente.js"></script>
-
-
-
 </body>
 
 <style>

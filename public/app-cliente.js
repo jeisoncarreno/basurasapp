@@ -4,13 +4,183 @@
 const nombre = localStorage.getItem("nombre");
 const torre = localStorage.getItem("torre");
 const apartamento = localStorage.getItem("apartamento");
+// lo agrego para mandados 
+const seccionMandado = document.getElementById("seccionMandado");
+const btnVolverMenuMandado = document.getElementById("btnVolverMenuMandado");
+const menuPrincipal = document.getElementById("menuPrincipal");
+const seccionBasura = document.getElementById("seccionBasura");
+const btnMandado = document.getElementById("btnMandado");
+const btnVolverMenu = document.getElementById("btnVolverMenu");
+
+if (btnMandado && seccionMandado && menuPrincipal) {
+    btnMandado.addEventListener("click", () => {
+        menuPrincipal.style.display = "none";
+        seccionBasura.style.display = "none";
+        seccionMandado.style.display = "block";
+
+        // Reset campos
+        document.getElementById("mensajeEstadoMandado").innerText = "";
+
+        document.getElementById("descripcionMandado").style.display = "block";
+        document.getElementById("precioMandado").style.display = "block";
+        document.getElementById("btnCrearMandado").style.display = "inline-block";
+        document.getElementById("btnNuevoMandado").style.display = "none";
 
 
 
+
+        cargarMisMandados();
+
+    });
+}
+
+if (btnVolverMenuMandado) {
+    btnVolverMenuMandado.addEventListener("click", () => {
+        seccionMandado.style.display = "none";
+        menuPrincipal.style.display = "block";
+    });
+}
+
+async function crearMandado() {
+    const descripcion = document.getElementById("descripcionMandado").value.trim();
+    const precioInput = document.getElementById("precioMandado");
+    const precio = Number(precioInput.value);
+
+    if (!descripcion) return miniToast("Describe el mandado");
+    if (!precio) return miniToast("Ingresa un precio");
+    if (precio < 600) return miniToast("El precio mínimo es $600");
+    if (precio % 100 !== 0) return miniToast("Debe ser múltiplo de $100");
+
+    const clienteID = `${torre}-${apartamento}`;
+
+    try {
+        const resp = await fetch("/api/pedidos", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                cliente: clienteID,
+                descripcion,
+                precio
+            })
+        });
+
+        if (!resp.ok) return miniToast("Error del servidor");
+
+        const data = await resp.json();
+        if (data.ok) {
+            miniToast("Mandado solicitado correctamente");
+
+            // 🟢 Mensaje verde
+            const msg = document.getElementById("mensajeEstadoMandado");
+            msg.innerText = "Mandado creado correctamente";
+            msg.style.color = "#28a745";
+
+            // ⛔ ocultar formulario
+            document.getElementById("descripcionMandado").style.display = "none";
+            document.getElementById("precioMandado").style.display = "none";
+            document.getElementById("btnCrearMandado").style.display = "none";
+            document.getElementById("infoMandado").style.display = "none";
+
+
+            // ✅ mostrar botón nuevo mandado
+            document.getElementById("btnNuevoMandado").style.display = "inline-block";
+
+            // limpiar valores
+            document.getElementById("descripcionMandado").value = "";
+            document.getElementById("precioMandado").value = "";
+
+            // recargar historial
+            cargarMisMandados();
+        }
+
+
+
+    } catch (e) {
+        console.error(e);
+        miniToast("No se pudo conectar");
+    }
+}
+document
+    .getElementById("btnCrearMandado")
+    .addEventListener("click", crearMandado);
+
+// lo agregue para mandados
+// btn volver menu
+if (btnVolverMenu) {
+    btnVolverMenu.addEventListener("click", () => {
+        // Mostrar menú principal
+        menuPrincipal.style.display = "block";
+
+        // Ocultar secciones (solo las que ya existen)
+        seccionBasura.style.display = "none";
+    });
+}
+
+document.getElementById("btnNuevoMandado").addEventListener("click", () => {
+
+    // mostrar formulario
+    document.getElementById("descripcionMandado").style.display = "block";
+    document.getElementById("precioMandado").style.display = "block";
+    document.getElementById("btnCrearMandado").style.display = "inline-block";
+
+    // ocultar botón nuevo
+    document.getElementById("btnNuevoMandado").style.display = "none";
+    document.getElementById("infoMandado").style.display = "block";
+
+    // limpiar mensaje
+    document.getElementById("mensajeEstadoMandado").innerText = "";
+
+    miniToast("Listo para crear un nuevo mandado");
+});
+
+
+function mostrarPrimerServicioBasura() {
+    // Limpiar estado visual
+    document.getElementById("estadoActual").innerHTML = "";
+    document.getElementById("misPedidos").style.display = "none";
+
+    // Mostrar formulario inicial
+    const precioInput = document.getElementById("precio");
+    precioInput.style.display = "inline-block";
+    precioInput.value = "";
+
+    document.getElementById("btnCrear").style.display = "inline-block";
+    document.getElementById("btnNuevo").style.display = "none";
+    document.getElementById("propinaInfo").style.display = "block";
+
+    // Texto de bienvenida normal
+    const bienvenida = document.getElementById("bienvenidaUsuario");
+    bienvenida.innerText = `¡Bienvenido ${nombre}!`;
+    bienvenida.style.color = "";
+}
 
 function formatoCOP(valor) {
     return `$${Number(valor).toLocaleString("es-CO")}`;
 }
+
+
+document.getElementById("btnBasura").addEventListener("click", () => {
+    menuPrincipal.style.display = "none";
+    seccionBasura.style.display = "block";
+
+    mostrarPrimerServicioBasura();
+});
+
+
+
+const precioInput = document.getElementById("precio");
+precioInput.style.display = "inline-block";
+precioInput.value = "";
+
+document.getElementById("btnCrear").style.display = "inline-block";
+document.getElementById("btnNuevo").style.display = "none";
+document.getElementById("propinaInfo").style.display = "block";
+
+const bienvenida = document.getElementById("bienvenidaUsuario");
+bienvenida.innerText = `¡Bienvenido ${nombre}!`;
+bienvenida.style.color = "";
+
+
 
 //--------------------------------------------------------------
 // MINI TOAST
@@ -61,10 +231,9 @@ async function crearPedido() {
             miniToast("Servicio solicitado correctamente");
 
             // 🔄 Cambiar bienvenida
-            const bienvenida = document.getElementById("bienvenidaUsuario");
-            bienvenida.classList.add("fade");
-            bienvenida.innerText = "Servicio creado correctamente";
-            bienvenida.style.color = "#28a745";
+            const mensaje = document.getElementById("mensajeEstadoServicio");
+            mensaje.innerText = "Servicio creado correctamente";
+
 
             // ⛔ OCULTAR TEXTO DE PROPINA
             document.getElementById("propinaInfo").style.display = "none";
@@ -97,6 +266,8 @@ document.getElementById("btnNuevo").addEventListener("click", () => {
     precioInput.style.display = "inline-block";
     document.getElementById("btnCrear").style.display = "inline-block";
     document.getElementById("btnNuevo").style.display = "none";
+    document.getElementById("mensajeEstadoServicio").innerText = "";
+
     precioInput.value = "";
 
     // ⛔ MOSTRAR TEXTO DE PROPINA OTRA VEZ
@@ -126,6 +297,7 @@ document.getElementById("btnNuevo").addEventListener("click", () => {
 // CARGAR SERVICIOS
 //--------------------------------------------------------------
 async function cargarMisServicios() {
+
     const res = await fetch(`/api/misPedidos?torre=${torre}&apartamento=${apartamento}`);
     const pedidos = await res.json();
 
@@ -239,5 +411,58 @@ window.addEventListener("DOMContentLoaded", () => {
 //--------------------------------------------------------------
 // CARGA INICIAL
 //--------------------------------------------------------------
+async function cargarMisMandados() {
+    const contenedor = document.getElementById("historialMandados");
+    contenedor.innerHTML = "Cargando mandados...";
+
+    const res = await fetch(`/api/misPedidos?torre=${torre}&apartamento=${apartamento}`);
+    const pedidos = await res.json();
+
+    const mandados = pedidos.filter(p =>
+        p.descripcion && p.descripcion !== "Servicio solicitado"
+    );
+
+    if (mandados.length === 0) {
+        contenedor.innerHTML = "<p>No tienes mandados aún</p>";
+        return;
+    }
+
+    let html = "";
+
+    mandados.forEach(m => {
+        const fecha = new Date(m.fecha);
+        html += `
+            <div class="card">
+                <p><strong>${m.descripcion}</strong></p>
+                <p>Precio: ${formatoCOP(m.precio)}</p>
+                <p>Estado: ${m.estado}</p>
+                <p style="font-size:12px;color:#666">
+                    ${fecha.toLocaleDateString()} ${fecha.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </p>
+            </div>
+        `;
+    });
+
+    contenedor.innerHTML = html;
+}
+
 cargarMisServicios();
 console.log("Cliente cargado:", torre, apartamento);
+
+const toggleMandados = document.getElementById("toggleMandados");
+const historialMandados = document.getElementById("historialMandados");
+
+if (toggleMandados) {
+    toggleMandados.addEventListener("click", () => {
+        if (
+            historialMandados.style.display === "none" ||
+            historialMandados.style.display === ""
+        ) {
+            historialMandados.style.display = "block";
+            toggleMandados.innerText = "Ocultar historial de mandados";
+        } else {
+            historialMandados.style.display = "none";
+            toggleMandados.innerText = "Ver historial de mandados";
+        }
+    });
+}
