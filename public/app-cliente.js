@@ -30,6 +30,7 @@ if (btnMandado && seccionMandado && menuPrincipal) {
 
 
         cargarMisMandados();
+        resetScroll();
 
     });
 }
@@ -38,6 +39,8 @@ if (btnVolverMenuMandado) {
     btnVolverMenuMandado.addEventListener("click", () => {
         seccionMandado.style.display = "none";
         menuPrincipal.style.display = "block";
+
+        resetScroll();
     });
 }
 
@@ -48,7 +51,7 @@ async function crearMandado() {
 
     if (!descripcion) return miniToast("Describe el mandado");
     if (!precio) return miniToast("Ingresa un precio");
-    if (precio < 600) return miniToast("El precio mínimo es $600");
+    if (precio < 500) return miniToast("El precio mínimo es $500");
     if (precio % 100 !== 0) return miniToast("Debe ser múltiplo de $100");
 
     const clienteID = `${torre}-${apartamento}`;
@@ -113,6 +116,8 @@ if (btnVolverMenu) {
 
         // Ocultar secciones (solo las que ya existen)
         seccionBasura.style.display = "none";
+
+        resetScroll();
     });
 }
 
@@ -132,6 +137,16 @@ document.getElementById("btnNuevoMandado").addEventListener("click", () => {
 
     miniToast("Listo para crear un nuevo mandado");
 });
+
+function resetScroll() {
+    window.scrollTo(0, 0);
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+
+    // 🔑 IMPORTANTE: resetear scroll interno de .app
+    const app = document.querySelector(".app");
+    if (app) app.scrollTop = 0;
+}
 
 
 function mostrarPrimerServicioBasura() {
@@ -164,6 +179,7 @@ document.getElementById("btnBasura").addEventListener("click", () => {
     seccionBasura.style.display = "block";
 
     mostrarPrimerServicioBasura();
+    resetScroll();
 });
 
 
@@ -205,11 +221,13 @@ function miniToast(texto) {
 // CREAR PEDIDO
 //--------------------------------------------------------------
 async function crearPedido() {
+    const observaciones = document.getElementById("observacionesBasura").value.trim();
+
     const precioInput = document.getElementById("precio");
     let precio = Number(precioInput.value.trim());
 
     if (!precio) return miniToast("Debes ingresar un precio");
-    if (precio < 600) return miniToast("El precio mínimo es $600");
+    if (precio < 500) return miniToast("El precio mínimo es $500");
     if (precio % 100 !== 0) return miniToast("El precio debe ser múltiplo de $100");
 
     const clienteID = `${torre}-${apartamento}`;
@@ -220,7 +238,7 @@ async function crearPedido() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 cliente: clienteID,
-                descripcion: "Servicio solicitado",
+                descripcion: observaciones || "Servicio solicitado",
                 precio
             })
         });
@@ -229,6 +247,10 @@ async function crearPedido() {
         const data = await resp.json();
         if (data.ok) {
             miniToast("Servicio solicitado correctamente");
+            document.getElementById("observacionesBasura").value = "";
+            document.getElementById("observacionesBasura").style.display = "none";
+
+
 
             // 🔄 Cambiar bienvenida
             const mensaje = document.getElementById("mensajeEstadoServicio");
@@ -263,10 +285,15 @@ document.getElementById("btnCrear").addEventListener("click", crearPedido);
 
 document.getElementById("btnNuevo").addEventListener("click", () => {
     const precioInput = document.getElementById("precio");
+    const obs = document.getElementById("observacionesBasura");
+    obs.style.display = "inline-block";
+    obs.value = "";
+
     precioInput.style.display = "inline-block";
     document.getElementById("btnCrear").style.display = "inline-block";
     document.getElementById("btnNuevo").style.display = "none";
     document.getElementById("mensajeEstadoServicio").innerText = "";
+
 
     precioInput.value = "";
 
@@ -320,9 +347,11 @@ async function cargarMisServicios() {
 
     divEstado.innerHTML = `
         <div class="card">
+            
             <p><strong>Servicio creado el:</strong> ${fechaActual.toLocaleDateString()} a las ${fechaActual.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
             <p><strong>Estado:</strong> ${actual.estado}</p>
             <p><strong>Precio:</strong> ${formatoCOP(actual.precio)}</p>
+            ${actual.descripcion ? `<p><strong>Observaciones:</strong> ${actual.descripcion}</p>` : ""}
 
         </div>
     `;
